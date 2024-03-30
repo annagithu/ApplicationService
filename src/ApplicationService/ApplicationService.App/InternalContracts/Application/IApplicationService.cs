@@ -18,5 +18,7 @@ namespace ApplicationService.InternalContracts.Application
         Task<ApplicationModel> SubmitApplication(ApplicationModel source);
 
         Task<List<ApplicationModel>> UnsubmittedOlder(ApplicationModel source);
+
+        Task<List<ApplicationModel>> SubmittedAfter(ApplicationModel source);
     }
 }

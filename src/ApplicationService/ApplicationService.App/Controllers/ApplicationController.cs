@@ -53,8 +53,17 @@ namespace ApplicationService.Controllers
             return editedApplication;
         }
 
-        [HttpPost("unsubmittedOlder")]
-        public async Task<List<ApplicationModel>> unsubmittedOldert([FromBody] ApplicationModel application)
+        [HttpPost("UnsubmittedOlder")]
+        public async Task<List<ApplicationModel>> UnsubmittedOlder([FromBody] ApplicationModel application)
+        {
+            var ListUnsubmittedOlder = new List<ApplicationModel>();
+            ListUnsubmittedOlder = await _applicationService.UnsubmittedOlder(application);
+
+            return ListUnsubmittedOlder;
+        }
+
+        [HttpPost("SubmittedAfter")]
+        public async Task<List<ApplicationModel>> SubmittedAfter([FromBody] ApplicationModel application)
         {
             var ListUnsubmittedOlder = new List<ApplicationModel>();
             ListUnsubmittedOlder = await _applicationService.UnsubmittedOlder(application);

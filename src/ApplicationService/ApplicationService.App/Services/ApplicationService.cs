@@ -87,7 +87,17 @@ namespace ApplicationService.App.Services
             return submittedApplication;
         }
 
-       
+        public async Task<List<ApplicationModel>> SubmittedAfter(ApplicationModel source)
+        {
+            DateTime dateTime = source.Date;
+            var dataset = new List<ApplicationModel>();
+            using (var context = new Context())
+            {
+                dataset = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.Status == true && unsubmittedOlder.Date > dateTime).ToListAsync();
+            }
+
+            return dataset;
+        }
 
         public async Task<List<ApplicationModel>> UnsubmittedOlder(ApplicationModel source)
         {
@@ -95,10 +105,7 @@ namespace ApplicationService.App.Services
             var dataset = new List<ApplicationModel>();
             using (var context = new Context())
             {
-               
                 dataset = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.Status == false && unsubmittedOlder.Date > dateTime).ToListAsync();
-
-            
             }
 
             return dataset;
