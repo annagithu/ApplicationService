@@ -14,6 +14,7 @@ namespace ApplicationService.App
     class Context : DbContext
     {
         public DbSet<ApplicationModel> Applications { get; set; }
+        public DbSet<ActivityModel> type_of_activities { get; set; }
 
         
         public Context()

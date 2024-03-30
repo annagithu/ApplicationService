@@ -34,11 +34,16 @@ namespace ApplicationService.InternalContracts.Application.Models
         [Column("status")]
         public Boolean Status { get; set; }
     }
+    public class ActivityModel
+    {
+        [Column("id")]
+        public int Id { get; set; }
 
+        [Column("name")]
+        public string Name { get; set; }
+
+        [Column("description")]
+        public string Description { get; set; }
+    }
 }
-//    public class ActivityModel
-//    {
-//        [Column("name")]
-//        public string Name { get; set; }
-//    }
-//}
+
