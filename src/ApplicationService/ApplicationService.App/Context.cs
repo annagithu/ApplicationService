@@ -16,7 +16,6 @@ namespace ApplicationService.App
         public DbSet<ApplicationModel> Applications { get; set; }
         public DbSet<ActivityModel> type_of_activities { get; set; }
 
-        
         public Context()
         {
             
@@ -33,9 +32,6 @@ namespace ApplicationService.App
         {
             return Task.CompletedTask;
         }
-
-        
-
 
     }
 }

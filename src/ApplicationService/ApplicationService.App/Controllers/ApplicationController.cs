@@ -18,7 +18,6 @@ namespace ApplicationService.Controllers
         }
 
 
-        // GET: ApplicationController
         [HttpPost("Create")]
         public async Task<ApplicationModel> Post( [FromBody] ApplicationModel application)
         {

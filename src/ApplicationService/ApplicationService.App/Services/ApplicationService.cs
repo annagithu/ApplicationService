@@ -37,7 +37,6 @@ namespace ApplicationService.App.Services
                 errorModel.Description = "You already have a draft";
                 return errorModel;
             }
-
             return source;
         }
 
@@ -45,7 +44,7 @@ namespace ApplicationService.App.Services
         {
             if (await IsExist(source) != true)
             {
-                errorModel.Description = "Application with this ID not exist";
+                errorModel.Description = "Application with this ID doesn't exist";
                 return errorModel;
             }
 
@@ -68,10 +67,9 @@ namespace ApplicationService.App.Services
 
         public async Task<ApplicationModel> EditApplication(ApplicationModel source)
         {
-
             if (await IsExist(source) != true)
             {
-                errorModel.Description = "Application with this ID not exist";
+                errorModel.Description = "Application with this ID  doesn't exist";
                 return errorModel;
             }
 
@@ -87,8 +85,6 @@ namespace ApplicationService.App.Services
                         editedApplication.IsSubmitted = false;
                         context.Update(editedApplication);
                         context.SaveChanges();
-
-
                     }
                     else
                     {
@@ -129,32 +125,25 @@ namespace ApplicationService.App.Services
         public async Task<List<ApplicationModel>> SubmittedAfter(ApplicationModel source)
         {
             DateTime dateTime = source.Date;
-            var dataset = new List<ApplicationModel>();
+            var subAfterList = new List<ApplicationModel>();
             using var context = new Context();
-
-            dataset = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == true && unsubmittedOlder.Date > dateTime).ToListAsync();
-
-
-            return dataset;
+            subAfterList = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == true && unsubmittedOlder.Date > dateTime).ToListAsync();
+            return subAfterList;
         }
 
         public async Task<List<ApplicationModel>> UnsubmittedOlder(ApplicationModel source)
         {
             DateTime dateTime = source.Date;
-            var dataset = new List<ApplicationModel>();
+            var unsubAfterList = new List<ApplicationModel>();
             using var context = new Context();
-
-            dataset = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == false && unsubmittedOlder.Date > dateTime).ToListAsync();
-
-
-            return dataset;
+            unsubAfterList = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == false && unsubmittedOlder.Date > dateTime).ToListAsync();
+            return unsubAfterList;
         }
 
         public async Task<ApplicationModel> CurrentApplication(ApplicationModel source)
         {
             var currentApplication = new ApplicationModel();
             using var context = new Context();
-
             currentApplication = await context.Applications.Where(application => application.IsSubmitted == false && application.Author == source.Author).FirstOrDefaultAsync();
             return currentApplication;
         }
@@ -162,83 +151,56 @@ namespace ApplicationService.App.Services
         public async Task<ApplicationModel> FindApplication(ApplicationModel source)
         {
             var foundApplication = new ApplicationModel();
-            using (var context = new Context())
-            {
-                foundApplication = await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync();
-
-            }
+            using var context = new Context();
+            foundApplication = await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync();
             return foundApplication;
         }
 
         public async Task<List<ActivityModel>> ListActivities()
         {
-            var dataset = new List<ActivityModel>();
-            using (var context = new Context())
-            {
-                dataset = await context.type_of_activities.ToListAsync();
-            }
-            return dataset;
+            var listActivities = new List<ActivityModel>();
+            using var context = new Context();
+            listActivities = await context.type_of_activities.ToListAsync();
+            return listActivities;
         }
 
         private async Task<bool> HasDraft(ApplicationModel source)
         {
-            bool hasDraft;
+            bool hasDraft = false;
             var foundDraft = new ApplicationModel();
-            using (var context = new Context())
+            using var context = new Context();
+            foundDraft = await context.Applications.Where(application => application.Author == source.Author && application.IsSubmitted == false).FirstOrDefaultAsync();
+            if (foundDraft != null)
             {
-
-                foundDraft = await context.Applications.Where(application => application.Author == source.Author && application.IsSubmitted == false).FirstOrDefaultAsync();
-                if (foundDraft != null)
-                {
-                    hasDraft = true;
-                }
-                else
-                {
-                    hasDraft = false;
-                }
-
+                hasDraft = true;
             }
             return hasDraft;
         }
 
         private async Task<bool> IsSubmit(ApplicationModel source)
         {
-            bool isSubmit;
-            var foundApplication = new ApplicationModel();
-            using (var context = new Context())
-            {
-                try
-                {
-                    foundApplication = await context.Applications.Where(application => application.Id == source.Id && application.IsSubmitted == true).FirstOrDefaultAsync();
-                    isSubmit = true;
-                }
-                catch
-                {
-                    isSubmit = false;
-                }
-            }
-            return isSubmit;
+           bool isSubmit = false;
+           var foundApplication = new ApplicationModel();
+           using var context = new Context();
+           foundApplication = await context.Applications.Where(application => application.Id == source.Id && application.IsSubmitted == true).FirstOrDefaultAsync();
+           if(foundApplication != null)
+           {
+                isSubmit = true;
+           }
+           return isSubmit;
         }
 
         private async Task<bool> IsExist(ApplicationModel source)
         {
-            bool isExist;
+            bool isExist = false;
             var foundApplication = new ApplicationModel();
-            using (var context = new Context())
+            using var context = new Context();
+            foundApplication = await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync();
+            if(foundApplication != null)
             {
-                try
-                {
-                    foundApplication = await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync();
-                    isExist = true;
-                }
-                catch
-                {
-                    isExist = false;
-                }
+                isExist = true;
             }
             return isExist;
         }
-
-
     }
 }
