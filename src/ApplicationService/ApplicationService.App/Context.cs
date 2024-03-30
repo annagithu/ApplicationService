@@ -7,25 +7,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ApplicationService.InternalContracts.Application.Models;
+using Npgsql;
 
 namespace ApplicationService.App
 {
     class Context : DbContext
     {
+        public DbSet<ApplicationModel> Applications { get; set; }
+
+        
         public Context()
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+            
         }
 
+        [Obsolete]
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(@"host=host.docker.internal;port=5432;database=applications;username=postgres;password=1").LogTo(Console.WriteLine);
+            ReloadTypesAsync();
         }
 
-        public DbSet<ApplicationModel> Applications { get; set; }
-        //public DbSet<ActivityKind> ActivitiesKind { get; set; }
+        public Task ReloadTypesAsync()
+        {
+            return Task.CompletedTask;
+        }
 
-       
+        
+
+
     }
 }

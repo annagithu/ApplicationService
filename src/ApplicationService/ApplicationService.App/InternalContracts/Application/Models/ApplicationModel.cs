@@ -14,7 +14,7 @@ namespace ApplicationService.InternalContracts.Application.Models
         public Guid Id { get; set; }
 
         [Column("author")]
-        public string Author { get; set; }
+        public Guid Author { get; set; }
 
         [Column("activity")]
         public string Activity { get; set; }
@@ -28,14 +28,17 @@ namespace ApplicationService.InternalContracts.Application.Models
         [Column("plan")]
         public string Plan { get; set; }
 
+        [Column("date")]
+        public DateTime Date { get; set; }
 
+        [Column("status")]
+        public Boolean Status { get; set; }
     }
 
-    internal enum ActivityKind
-    {
-        None,
-        Report,
-        Tutorial,
-        Discussion
-    }
 }
+//    public class ActivityModel
+//    {
+//        [Column("name")]
+//        public string Name { get; set; }
+//    }
+//}

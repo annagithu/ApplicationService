@@ -11,5 +11,12 @@ namespace ApplicationService.InternalContracts.Application
     {
         Task<ApplicationModel> CreateApplication(ApplicationModel source);
 
+        Task<ApplicationModel> DeleteApplication(ApplicationModel source);
+
+        Task<ApplicationModel> EditApplication(ApplicationModel source);
+
+        Task<ApplicationModel> SubmitApplication(ApplicationModel source);
+
+        Task<List<ApplicationModel>> UnsubmittedOlder(ApplicationModel source);
     }
 }

@@ -19,7 +19,7 @@ namespace ApplicationService.Controllers
 
 
         // GET: ApplicationController
-        [HttpPost("/")]
+        [HttpPost("Create")]
         public async Task<ApplicationModel> Post( [FromBody] ApplicationModel application)
         {
            var createdApplication  = await _applicationService.CreateApplication(application);
@@ -27,13 +27,42 @@ namespace ApplicationService.Controllers
             return createdApplication;
         }
 
-        //
 
-     
+        [HttpPost("Delete")]
+        public async Task<ApplicationModel> Delete([FromBody] ApplicationModel application)
+        {
+            var deletedApplication = await _applicationService.DeleteApplication(application);
+
+            return deletedApplication;
+        }
 
 
+        [HttpPost("Edit")]
+        public async Task<ApplicationModel> Edit([FromBody] ApplicationModel application)
+        {
+            var editedApplication = await _applicationService.EditApplication(application);
 
+            return editedApplication;
+        }
 
+        [HttpPost("Submit")]
+        public async Task<ApplicationModel> Submit([FromBody] ApplicationModel application)
+        {
+            var editedApplication = await _applicationService.SubmitApplication(application);
 
+            return editedApplication;
+        }
+
+        [HttpPost("unsubmittedOlder")]
+        public async Task<List<ApplicationModel>> unsubmittedOldert([FromBody] ApplicationModel application)
+        {
+            var ListUnsubmittedOlder = new List<ApplicationModel>();
+            ListUnsubmittedOlder = await _applicationService.UnsubmittedOlder(application);
+
+            return ListUnsubmittedOlder;
+        }
     }
+
+
 }
+
