@@ -116,23 +116,13 @@ namespace ApplicationService.App.Services
 
             var submittedApplication = new ApplicationModel { Id = source.Id };
             using var context = new Context();
-
-            try
+            if (submittedApplication != null)
             {
-                if (submittedApplication != null)
-                {
-
-                    submittedApplication = source;
-                    submittedApplication.IsSubmitted = true;
-                    context.Update(submittedApplication);
-                    context.SaveChanges();
-                }
+                submittedApplication = source;
+                submittedApplication.IsSubmitted = true;
+                context.Update(submittedApplication);
+                context.SaveChanges();
             }
-            catch
-            {
-
-            }
-
             return submittedApplication;
         }
 
@@ -241,7 +231,7 @@ namespace ApplicationService.App.Services
                     foundApplication = await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync();
                     isExist = true;
                 }
-                catch 
+                catch
                 {
                     isExist = false;
                 }

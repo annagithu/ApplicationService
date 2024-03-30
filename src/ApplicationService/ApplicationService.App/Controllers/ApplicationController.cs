@@ -91,8 +91,6 @@ namespace ApplicationService.Controllers
             return listActivities;
         }
 
-
-
     }
 
 

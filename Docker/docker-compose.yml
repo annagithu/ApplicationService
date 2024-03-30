@@ -21,7 +21,7 @@ services:
       - 32768:32768
     build:
       context: ../
-      dockerfile: /src/ApplicationService/ApplicationService.App/Dockerfile
+      dockerfile: Docker/Dockerfile
     depends_on:
       - postgres-service
 
