@@ -31,8 +31,8 @@ namespace ApplicationService.InternalContracts.Application.Models
         [Column("date")]
         public DateTime Date { get; set; }
 
-        [Column("status")]
-        public Boolean Status { get; set; }
+        [Column("is_submitted")]
+        public bool IsSubmitted { get; set; }
     }
     public class ActivityModel
     {

@@ -1,0 +1,29 @@
+version: '3.7'
+
+# Set up all services
+services:
+
+  postgres-service:
+    image: postgres:16.1
+    restart: always
+    container_name: postgres-service
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 1
+    ports:
+      - 5532:5432
+
+  application.service:
+    restart: always
+    container_name: application.service
+    ports:
+      - 32768:32768
+    build:
+      context: ../
+      dockerfile: /src/ApplicationService/ApplicationService.App/Dockerfile
+    depends_on:
+      - postgres-service
+
+volumes:
+  postgres_data:

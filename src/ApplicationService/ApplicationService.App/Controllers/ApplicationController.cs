@@ -56,8 +56,8 @@ namespace ApplicationService.Controllers
         [HttpPost("UnsubmittedOlder")]
         public async Task<List<ApplicationModel>> UnsubmittedOlder([FromBody] ApplicationModel application)
         {
-            var ListUnsubmittedOlder = new List<ApplicationModel>();
-            ListUnsubmittedOlder = await _applicationService.UnsubmittedOlder(application);
+            
+            var ListUnsubmittedOlder = await _applicationService.UnsubmittedOlder(application);
 
             return ListUnsubmittedOlder;
         }
@@ -65,32 +65,29 @@ namespace ApplicationService.Controllers
         [HttpPost("SubmittedAfter")]
         public async Task<List<ApplicationModel>> SubmittedAfter([FromBody] ApplicationModel application)
         {
-            var SubmittedAfter = new List<ApplicationModel>();
-            SubmittedAfter = await _applicationService.SubmittedAfter(application);
+          
+           var SubmittedAfter = await _applicationService.SubmittedAfter(application);
             return SubmittedAfter;
         }
 
         [HttpPost("CurrentApplication")]
         public async Task<ApplicationModel> CurrentApplication([FromBody] ApplicationModel application)
         {
-            var CurrentApplication = new ApplicationModel();
-            CurrentApplication = await _applicationService.CurrentApplication(application);
+            var CurrentApplication = await _applicationService.CurrentApplication(application);
             return CurrentApplication;
         }
 
         [HttpPost("FindApplication")]
         public async Task<ApplicationModel> FindApplication([FromBody] ApplicationModel application)
         {
-            var findApplication = new ApplicationModel();
-            findApplication = await _applicationService.FindApplication(application);
+            var findApplication = await _applicationService.FindApplication(application);
             return findApplication;
         }
 
         [HttpPost("ListActivities")]
         public async Task<List<ActivityModel>> ListActivities()
-        {
-            var listActivities = new List<ActivityModel>();
-            listActivities = await _applicationService.ListActivities();
+        { 
+            var listActivities = await _applicationService.ListActivities();
             return listActivities;
         }
 
