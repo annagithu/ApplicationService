@@ -103,6 +103,11 @@ namespace ApplicationService.App.Services
             using var context = new Context();
             if (submittedApplication != null)
             {
+                if (!ActivityNames.AvailableNames.Contains(source.Activity))
+                {
+                    errorModel.Description = $"You cannot choose {source.Activity} type of activity. Available types: {string.Join(" ", ActivityNames.AvailableNames)}";
+                    return errorModel;
+                }
                 submittedApplication = source;
                 submittedApplication.IsSubmitted = true;
                 context.Update(submittedApplication);
