@@ -10,13 +10,13 @@ namespace ApplicationService.App
 
         public Context()
         {
-            
+            Database.EnsureCreated();
         }
 
         [Obsolete]
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"host=host.docker.internal;port=5432;database=applications;username=postgres;password=1").LogTo(Console.WriteLine);
+            optionsBuilder.UseNpgsql(@"host=postgres-service;port=5432;database=applications;username=postgres;password=1").LogTo(Console.WriteLine);
             ReloadTypesAsync();
         }
 
