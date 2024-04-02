@@ -118,39 +118,32 @@ namespace ApplicationService.App.Services
 
         public async Task<List<ApplicationModel>> SubmittedAfter(ApplicationModel source)
         {
-            DateTime dateTime = source.Date;
             using var context = new Context();
-            var subAfterList = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == true && unsubmittedOlder.Date > dateTime).ToListAsync();
-            return subAfterList;
+            return await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == true && unsubmittedOlder.Date > source.Date).ToListAsync();
         }
 
         public async Task<List<ApplicationModel>> UnsubmittedOlder(ApplicationModel source)
         {
-            DateTime dateTime = source.Date;
             using var context = new Context();
-            var unsubAfterList = await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == false && unsubmittedOlder.Date > dateTime).ToListAsync();
-            return unsubAfterList;
+            return await context.Applications.Where(unsubmittedOlder => unsubmittedOlder.IsSubmitted == false && unsubmittedOlder.Date > source.Date).ToListAsync();
         }
 
         public async Task<ApplicationModel> CurrentApplication(ApplicationModel source)
         {
             using var context = new Context();
-            var currentApplication = await context.Applications.Where(application => application.IsSubmitted == false && application.Author == source.Author).FirstOrDefaultAsync();
-            return currentApplication;
+            return await context.Applications.Where(application => application.IsSubmitted == false && application.Author == source.Author).FirstOrDefaultAsync();
         }
 
         public async Task<ApplicationModel> FindApplication(ApplicationModel source)
         {
             using var context = new Context();
-            var foundApplication = await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync();
-            return foundApplication;
+            return await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync();
         }
 
         public async Task<List<ActivityModel>> ListActivities()
         {
             using var context = new Context();
-            var listActivities = await context.type_of_activities.ToListAsync();
-            return listActivities;
+            return await context.type_of_activities.ToListAsync();
         }
 
         private async Task<bool> HasDraft(ApplicationModel source)
