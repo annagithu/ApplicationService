@@ -12,14 +12,13 @@ namespace ApplicationService.App.Services
     public class ApplicationService : IApplicationService
     {
 
-        public ApplicationModel errorModel = new ApplicationModel { Name = "Invalid Value. Please, try again" };
+        
 
         public async Task<ApplicationModel> CreateApplication(ApplicationModel source)
         {
             if (await HasDraft(source) != true)
             {
-                errorModel.Description = "You already have a draft";
-                return errorModel;
+                return ErrorModels.AlreadyHaveaDraft;
             }
             using var context = new Context();
             if (ActivityNames.AvailableNames.Contains(source.Activity))
@@ -31,8 +30,7 @@ namespace ApplicationService.App.Services
             }
             else
             {
-                errorModel.Description = $"You cannot choose {source.Activity} type of activity. Available types: {string.Join(" ", ActivityNames.AvailableNames)}";
-                return errorModel;
+                return ErrorModels.WrongActivity(source);
             }
             return source;
         }
@@ -41,14 +39,12 @@ namespace ApplicationService.App.Services
         {
             if (await IsExist(source) != true)
             {
-                errorModel.Description = "Application with this ID doesn't exist";
-                return errorModel;
+                return ErrorModels.DoesntExist;
             }
 
             if (await IsSubmit(source))
             {
-                errorModel.Description = "This application is submit already.You cannot delete it.";
-                return errorModel;
+                return ErrorModels.AlreadySubmitted;
             }
 
             using var context = new Context();
@@ -62,20 +58,17 @@ namespace ApplicationService.App.Services
         {
             if (await IsExist(source) != true)
             {
-                errorModel.Description = "Application with this ID  doesn't exist";
-                return errorModel;
+                return ErrorModels.DoesntExist;
             }
             if (await IsSubmit(source))
             {
-                errorModel.Description = "This application is submit already.You cannot edit it.";
-                return errorModel;
+                return ErrorModels.AlreadySubmitted;
             }
             using var context = new Context();
             var editedApplication = new ApplicationModel { Id = source.Id };
             if (!ActivityNames.AvailableNames.Contains(source.Activity))
             {
-                errorModel.Description = $"You cannot choose {source.Activity} type of activity. Available types: {string.Join(" ", ActivityNames.AvailableNames)}";
-                return errorModel;
+                return ErrorModels.WrongActivity(source);
             }
             editedApplication = source;
             editedApplication.IsSubmitted = false;
@@ -88,8 +81,7 @@ namespace ApplicationService.App.Services
         {
             if (await IsExist(source) != true)
             {
-                errorModel.Description = "Application with this ID not exist";
-                return errorModel;
+                return ErrorModels.DoesntExist;
             }
 
             var submittedApplication = new ApplicationModel { Id = source.Id };
@@ -98,8 +90,7 @@ namespace ApplicationService.App.Services
             {
                 if (!ActivityNames.AvailableNames.Contains(source.Activity))
                 {
-                    errorModel.Description = $"You cannot choose {source.Activity} type of activity. Available types: {string.Join(" ", ActivityNames.AvailableNames)}";
-                    return errorModel;
+                    return ErrorModels.WrongActivity(source);
                 }
                 submittedApplication = source;
                 submittedApplication.IsSubmitted = true;
@@ -141,37 +132,20 @@ namespace ApplicationService.App.Services
 
         private async Task<bool> HasDraft(ApplicationModel source)
         {
-            bool hasDraft = false;
             using var context = new Context();
-            var foundDraft = await context.Applications.Where(application => application.Author == source.Author && application.IsSubmitted == false).FirstOrDefaultAsync();
-            if (foundDraft != null)
-            {
-                hasDraft = true;
-            }
-            return hasDraft;
+            return (await context.Applications.Where(application => application.Author == source.Author && application.IsSubmitted == false).FirstOrDefaultAsync() != null);
         }
 
         private async Task<bool> IsSubmit(ApplicationModel source)
-        {
-            bool isSubmit = false;
+        { 
             using var context = new Context();
-            var foundApplication = await context.Applications.Where(application => application.Id == source.Id && application.IsSubmitted == true).FirstOrDefaultAsync();
-            if (foundApplication != null)
-            {
-                isSubmit = true;
-            }
-            return isSubmit;
+            return (await context.Applications.Where(application => application.Id == source.Id && application.IsSubmitted == true).FirstOrDefaultAsync() != null);
         }
 
         private async Task<bool> IsExist(ApplicationModel source)
         {
-            bool isExist = false;
             using var context = new Context();
-            if (await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync() != null)
-            {
-                isExist = true;
-            }
-            return isExist;
+            return (await context.Applications.Where(application => application.Id == source.Id).FirstOrDefaultAsync() != null);
         }
     }
 }
