@@ -45,7 +45,7 @@ namespace ApplicationService.App.Services
                 return errorModel;
             }
 
-            if (await IsSubmit(source) == true)
+            if (await IsSubmit(source))
             {
                 errorModel.Description = "This application is submit already.You cannot delete it.";
                 return errorModel;
