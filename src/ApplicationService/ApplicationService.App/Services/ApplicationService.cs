@@ -73,8 +73,6 @@ namespace ApplicationService.App.Services
             }
                 using var context = new Context();
                 var editedApplication = new ApplicationModel { Id = source.Id };
-                if (editedApplication != null)
-                {
                     if (ActivityNames.AvailableNames.Contains(source.Activity))
                     {
                         editedApplication = source;
@@ -87,7 +85,6 @@ namespace ApplicationService.App.Services
                         errorModel.Description = $"You cannot choose {source.Activity} type of activity. Available types: {string.Join(" ", ActivityNames.AvailableNames)}";
                         return errorModel;
                     }
-                } 
             return source;
         }
 
