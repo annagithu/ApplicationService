@@ -65,8 +65,7 @@ namespace ApplicationService.App.Services
                 errorModel.Description = "Application with this ID  doesn't exist";
                 return errorModel;
             }
-
-            if (await IsSubmit(source) == true)
+            if (await IsSubmit(source))
             {
                 errorModel.Description = "This application is submit already.You cannot edit it.";
                 return errorModel;
