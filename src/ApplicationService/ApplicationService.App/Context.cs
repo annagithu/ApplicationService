@@ -16,7 +16,7 @@ namespace ApplicationService.App
         [Obsolete]
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"host=postgres-service;port=5432;database=applications;username=postgres;password=1").LogTo(Console.WriteLine);
+            optionsBuilder.UseNpgsql(@"host=localhost;port=5432;database=applications;username=postgres;password=1").LogTo(Console.WriteLine);
             ReloadTypesAsync();
         }
 
