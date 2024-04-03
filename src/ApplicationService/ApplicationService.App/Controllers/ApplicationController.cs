@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ApplicationService.InternalContracts.Application.Models;
 using ApplicationService.InternalContracts.Application;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationService.Controllers
 {
+
     [ApiController]
     [Route("[controller]")]
     

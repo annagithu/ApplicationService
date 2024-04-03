@@ -16,9 +16,14 @@ namespace ApplicationService.App.Services
 
         public async Task<ApplicationModel> CreateApplication(ApplicationModel source)
         {
-            if (await HasDraft(source) != true)
+            if (!await HasDraft(source))
             {
                 return ErrorModels.AlreadyHaveaDraft;
+            }
+
+            if(await IsExist(source))
+            {
+                return ErrorModels.IsExistAlready;
             }
             using var context = new Context();
             if (ActivityNames.AvailableNames.Contains(source.Activity))

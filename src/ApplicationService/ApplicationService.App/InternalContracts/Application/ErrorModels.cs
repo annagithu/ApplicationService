@@ -9,6 +9,12 @@ namespace ApplicationService.App.InternalContracts.Application
            Description = "Application with this ID  doesn't exist"
        };
 
+        public static ApplicationModel IsExistAlready = new ApplicationModel()
+        {
+            Name = "Invalid Value. Please, try again",
+            Description = "Application with this ID already exist"
+        };
+
         public static ApplicationModel AlreadyHaveaDraft = new ApplicationModel()
         {
             Name = "Invalid Value. Please, try again",
@@ -30,6 +36,10 @@ namespace ApplicationService.App.InternalContracts.Application
             Description = "This application is submit already.You cannot delete/edit it."
         };
 
-
+        public static ApplicationModel NotEnoughData = new ApplicationModel()
+        {
+            Name = "Invalid Value. Please, try again",
+            Description = "Please, enter all fields."
+        };
     }
 }
