@@ -25,7 +25,7 @@ namespace ApplicationService.App.Services
             {
                 return ErrorModels.IsExistAlready;
             }
-
+           
             using var context = new Context();
             if (ActivityNames.AvailableNames.Contains(source.Activity))
             {
