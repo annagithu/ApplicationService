@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Data;
+using Microsoft.Extensions.Logging;
+using Serilog;
+
 
 namespace ApplicationService.App.Services
 {
 
     public class ApplicationService : IApplicationService
     {
-
-        
-
         public async Task<ApplicationModel> CreateApplication(ApplicationModel source)
         {
             if (await HasDraft(source))
@@ -32,10 +32,17 @@ namespace ApplicationService.App.Services
             using var context = new Context();
             if (ActivityNames.AvailableNames.Contains(source.Activity))
             {
-                source.Date = DateTime.Now;
-                source.IsSubmitted = false;
-                await context.AddAsync(source);
-                await context.SaveChangesAsync();
+                try
+                {
+                    source.Date = DateTime.Now;
+                    source.IsSubmitted = false;
+                    await context.AddAsync(source);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Log.Fatal(ex, "Application terminated unexpectedly.");
+                }
             }
             else
             {
@@ -55,11 +62,17 @@ namespace ApplicationService.App.Services
             {
                 return ErrorModels.AlreadySubmitted;
             }
-
-            using var context = new Context();
-            var deletedApplication = new ApplicationModel { Id = source.Id };
-            context.Remove(deletedApplication);
-            context.SaveChanges();
+            try
+            {
+                using var context = new Context();
+                var deletedApplication = new ApplicationModel { Id = source.Id };
+                context.Remove(deletedApplication);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application terminated unexpectedly.");
+            }
             return source;
         }
 
@@ -79,10 +92,18 @@ namespace ApplicationService.App.Services
             {
                 return ErrorModels.WrongActivity(source);
             }
-            editedApplication = source;
-            editedApplication.IsSubmitted = false;
-            context.Update(editedApplication);
-            context.SaveChanges();
+            try
+            {
+                editedApplication = source;
+                editedApplication.IsSubmitted = false;
+                context.Update(editedApplication);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application terminated unexpectedly.");
+            }
+
             return source;
         }
 
@@ -101,10 +122,26 @@ namespace ApplicationService.App.Services
                 {
                     return ErrorModels.WrongActivity(source);
                 }
-                submittedApplication = source;
-                submittedApplication.IsSubmitted = true;
-                context.Update(submittedApplication);
-                context.SaveChanges();
+
+                if (source.Name == "")
+                {
+                    return ErrorModels.NotEnoughData;
+                }
+                try
+                {
+                    submittedApplication = source;
+                    submittedApplication.IsSubmitted = true;
+                    context.Update(submittedApplication);
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Log.Fatal(ex, "Application terminated unexpectedly.");
+                }
+            }
+            else
+            {
+                return ErrorModels.DoesntExist;
             }
             return submittedApplication;
         }
