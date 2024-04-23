@@ -28,7 +28,7 @@ namespace ApplicationService.Controllers
         }
 
 
-        [HttpPost("Delete")]
+        [HttpDelete("Delete")]
         public async Task<ApplicationModel> Delete([FromBody] ApplicationModel application)
         {
             var deletedApplication = await _applicationService.DeleteApplication(application);
@@ -53,7 +53,7 @@ namespace ApplicationService.Controllers
             return editedApplication;
         }
 
-        [HttpPost("UnsubmittedOlder")]
+        [HttpGet("UnsubmittedOlder")]
         public async Task<List<ApplicationModel>> UnsubmittedOlder([FromBody] ApplicationModel application)
         {
             
@@ -62,7 +62,7 @@ namespace ApplicationService.Controllers
             return ListUnsubmittedOlder;
         }
 
-        [HttpPost("SubmittedAfter")]
+        [HttpGet("SubmittedAfter")]
         public async Task<List<ApplicationModel>> SubmittedAfter([FromBody] ApplicationModel application)
         {
           
@@ -70,21 +70,21 @@ namespace ApplicationService.Controllers
             return SubmittedAfter;
         }
 
-        [HttpPost("CurrentApplication")]
+        [HttpGet("CurrentApplication")]
         public async Task<ApplicationModel> CurrentApplication([FromBody] ApplicationModel application)
         {
             var CurrentApplication = await _applicationService.CurrentApplication(application);
             return CurrentApplication;
         }
 
-        [HttpPost("FindApplication")]
+        [HttpGet("FindApplication")]
         public async Task<ApplicationModel> FindApplication([FromBody] ApplicationModel application)
         {
             var findApplication = await _applicationService.FindApplication(application);
             return findApplication;
         }
 
-        [HttpPost("ListActivities")]
+        [HttpGet("ListActivities")]
         public async Task<List<ActivityModel>> ListActivities()
         { 
             var listActivities = await _applicationService.ListActivities();

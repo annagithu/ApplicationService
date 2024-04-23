@@ -11,7 +11,7 @@ public class Program
         builder.Logging.ClearProviders();
 
         Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
-
+        builder.Services.AddSerilog();
         builder.Services.AddControllers();
         builder.Services.AddSingleton<IApplicationService, ApplicationService.App.Services.ApplicationService>();
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
